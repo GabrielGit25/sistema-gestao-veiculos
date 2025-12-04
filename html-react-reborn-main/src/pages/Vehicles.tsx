@@ -4,6 +4,7 @@ import { Vehicle } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { VehicleDetails } from "@/components/vehicles/VehicleDetails";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface VehiclesProps {
   vehicles: Vehicle[];
@@ -20,7 +21,15 @@ export function Vehicles({
   selectedVehicleId, 
   onSelectVehicle 
 }: VehiclesProps) {
-  const selectedVehicle = vehicles.find(v => v.id === selectedVehicleId);
+  const { user, isDriver } = useAuth();
+  
+  // Filtrar veículos baseado no tipo de usuário
+  let filteredVehicles = vehicles;
+  if (isDriver && user?.vehicleId) {
+    filteredVehicles = vehicles.filter(v => v.id === user.vehicleId);
+  }
+  
+  const selectedVehicle = filteredVehicles.find(v => v.id === selectedVehicleId);
 
   if (selectedVehicle) {
     return (
@@ -43,7 +52,7 @@ export function Vehicles({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {vehicles.map((vehicle) => (
+        {filteredVehicles.map((vehicle) => (
           <VehicleCard 
             key={vehicle.id} 
             vehicle={vehicle}

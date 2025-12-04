@@ -1,41 +1,53 @@
 import { Car, Users, FileText, Bell } from "lucide-react";
 import { Vehicle } from "@/data/mockData";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DashboardProps {
   vehicles: Vehicle[];
   onViewVehicle: (vehicleId: number) => void;
 }
 
-const dashboardCards = [
-  { 
-    title: 'Total de Veículos', 
-    value: '4', 
-    subtitle: '2 em serviço',
-    icon: Car,
-  },
-  { 
-    title: 'Total de Motoristas', 
-    value: '4', 
-    subtitle: '3 disponíveis',
-    icon: Users,
-  },
-  { 
-    title: 'Despesas do Mês', 
-    value: 'R$ 2.450', 
-    subtitle: '-12% vs mês anterior',
-    icon: FileText,
-  },
-  { 
-    title: 'Alertas', 
-    value: '5', 
-    subtitle: '2 urgentes',
-    icon: Bell,
-  },
-];
+
 
 export function Dashboard({ vehicles, onViewVehicle }: DashboardProps) {
-  const vehiclesInService = vehicles.filter(v => v.status === 'Em serviço');
+  const { user, isDriver } = useAuth();
+  
+  // Filtrar veículos baseado no tipo de usuário
+  let filteredVehicles = vehicles;
+  if (isDriver && user?.vehicleId) {
+    filteredVehicles = vehicles.filter(v => v.id === user.vehicleId);
+  }
+  
+  const vehiclesInService = filteredVehicles.filter(v => v.status === 'Em serviço');
+
+  // Dashboard cards configurada dentro do componente para acessar as variáveis
+  const dashboardCards = [
+    { 
+      title: isDriver ? 'Meu Veículo' : 'Total de Veículos', 
+      value: isDriver ? (filteredVehicles.length > 0 ? '1' : '0') : filteredVehicles.length.toString(), 
+      subtitle: isDriver ? (filteredVehicles[0]?.status || 'Sem veículo') : `${vehiclesInService.length} em serviço`,
+      icon: Car,
+    },
+    { 
+      title: isDriver ? 'Meu Status' : 'Total de Motoristas', 
+      value: isDriver ? (filteredVehicles.length > 0 ? 'Ativo' : 'Inativo') : '4', 
+      subtitle: isDriver ? (filteredVehicles[0]?.status || 'Sem veículo') : '3 disponíveis',
+      icon: Users,
+    },
+    { 
+      title: 'Despesas do Mês', 
+      value: 'R$ 2.450', 
+      subtitle: '-12% vs mês anterior',
+      icon: FileText,
+    },
+    { 
+      title: 'Alertas', 
+      value: '5', 
+      subtitle: '2 urgentes',
+      icon: Bell,
+    },
+  ];
 
   return (
     <div>

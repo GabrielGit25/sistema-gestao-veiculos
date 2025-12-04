@@ -1,9 +1,25 @@
+export interface VehicleFotos {
+  dianteira: string | null;
+  lateralDireita: string | null;
+  lateralEsquerda: string | null;
+  traseira: string | null;
+  painelInstrumentos: string | null;
+  cambio: string | null;
+  painel: string | null;
+  motor: string | null;
+  pneuDianteiroDireito: string | null;
+  pneuDianteiroEsquerdo: string | null;
+  pneuTraseiroDireito: string | null;
+  pneuTraseiroEsquerdo: string | null;
+}
+
 export interface Vehicle {
   id: number;
   placa: string;
   modelo: string;
   marca: string;
   estado: string;
+  motorista: string;
   status: 'Em serviço' | 'Em manutenção' | 'Fora de serviço';
   quilometragem: string;
   combustivel: string;
@@ -17,6 +33,7 @@ export interface Vehicle {
   potencia: string;
   estadoUF: string;
   imageSrc: string | null;
+  fotos?: VehicleFotos;
 }
 
 export interface Driver {
@@ -34,6 +51,7 @@ export interface Driver {
   cidade: string;
   estado: string;
   cep: string;
+  veiculo: string;
   status: 'Disponível' | 'Em serviço' | 'Fora de serviço';
   imageSrc: string | null;
 }
@@ -45,6 +63,7 @@ export const initialVehicles: Vehicle[] = [
     modelo: 'KANGOO',
     marca: 'RENAULT',
     estado: 'Madeira',
+    motorista: 'João Silva',
     status: 'Em serviço',
     quilometragem: '100.654',
     combustivel: 'Diesel',
@@ -57,7 +76,21 @@ export const initialVehicles: Vehicle[] = [
     cor: 'Preto',
     potencia: '75 CV',
     estadoUF: 'SP',
-    imageSrc: 'https://picsum.photos/seed/renault-kangoo-van/300/200'
+    imageSrc: 'https://picsum.photos/seed/renault-kangoo-van/300/200',
+    fotos: {
+      dianteira: null,
+      lateralDireita: null,
+      lateralEsquerda: null,
+      traseira: null,
+      painelInstrumentos: null,
+      cambio: null,
+      painel: null,
+      motor: null,
+      pneuDianteiroDireito: null,
+      pneuDianteiroEsquerdo: null,
+      pneuTraseiroDireito: null,
+      pneuTraseiroEsquerdo: null
+    }
   },
   {
     id: 2,
@@ -65,6 +98,7 @@ export const initialVehicles: Vehicle[] = [
     modelo: 'TRANSIT',
     marca: 'FORD',
     estado: 'São Paulo',
+    motorista: 'Maria Santos',
     status: 'Em serviço',
     quilometragem: '85.320',
     combustivel: 'Diesel',
@@ -77,7 +111,21 @@ export const initialVehicles: Vehicle[] = [
     cor: 'Branco',
     potencia: '85 CV',
     estadoUF: 'SP',
-    imageSrc: 'https://picsum.photos/seed/ford-transit-van/300/200'
+    imageSrc: 'https://picsum.photos/seed/ford-transit-van/300/200',
+    fotos: {
+      dianteira: null,
+      lateralDireita: null,
+      lateralEsquerda: null,
+      traseira: null,
+      painelInstrumentos: null,
+      cambio: null,
+      painel: null,
+      motor: null,
+      pneuDianteiroDireito: null,
+      pneuDianteiroEsquerdo: null,
+      pneuTraseiroDireito: null,
+      pneuTraseiroEsquerdo: null
+    }
   },
   {
     id: 3,
@@ -85,6 +133,7 @@ export const initialVehicles: Vehicle[] = [
     modelo: 'SAVEIRO',
     marca: 'VOLKSWAGEN',
     estado: 'Rio de Janeiro',
+    motorista: 'Ana Costa',
     status: 'Em manutenção',
     quilometragem: '45.780',
     combustivel: 'Gasolina',
@@ -97,7 +146,21 @@ export const initialVehicles: Vehicle[] = [
     cor: 'Prata',
     potencia: '128 CV',
     estadoUF: 'RJ',
-    imageSrc: 'https://picsum.photos/seed/volkswagen-saveiro/300/200'
+    imageSrc: 'https://picsum.photos/seed/volkswagen-saveiro/300/200',
+    fotos: {
+      dianteira: null,
+      lateralDireita: null,
+      lateralEsquerda: null,
+      traseira: null,
+      painelInstrumentos: null,
+      cambio: null,
+      painel: null,
+      motor: null,
+      pneuDianteiroDireito: null,
+      pneuDianteiroEsquerdo: null,
+      pneuTraseiroDireito: null,
+      pneuTraseiroEsquerdo: null
+    }
   },
   {
     id: 4,
@@ -105,6 +168,7 @@ export const initialVehicles: Vehicle[] = [
     modelo: 'SPRINTER',
     marca: 'MERCEDES-BENZ',
     estado: 'Minas Gerais',
+    motorista: '-',
     status: 'Fora de serviço',
     quilometragem: '150.200',
     combustivel: 'Diesel',
@@ -117,7 +181,21 @@ export const initialVehicles: Vehicle[] = [
     cor: 'Azul',
     potencia: '143 CV',
     estadoUF: 'MG',
-    imageSrc: 'https://picsum.photos/seed/mercedes-sprinter/300/200'
+    imageSrc: 'https://picsum.photos/seed/mercedes-sprinter/300/200',
+    fotos: {
+      dianteira: null,
+      lateralDireita: null,
+      lateralEsquerda: null,
+      traseira: null,
+      painelInstrumentos: null,
+      cambio: null,
+      painel: null,
+      motor: null,
+      pneuDianteiroDireito: null,
+      pneuDianteiroEsquerdo: null,
+      pneuTraseiroDireito: null,
+      pneuTraseiroEsquerdo: null
+    }
   }
 ];
 
@@ -137,6 +215,7 @@ export const initialDrivers: Driver[] = [
     cidade: 'São Paulo',
     estado: 'SP',
     cep: '01234-567',
+    veiculo: 'SGF1525',
     status: 'Disponível',
     imageSrc: 'https://picsum.photos/seed/driver-joao/300/300'
   },
@@ -155,6 +234,7 @@ export const initialDrivers: Driver[] = [
     cidade: 'São Paulo',
     estado: 'SP',
     cep: '01310-100',
+    veiculo: 'ABC1234',
     status: 'Em serviço',
     imageSrc: 'https://picsum.photos/seed/driver-maria/300/300'
   },
@@ -173,6 +253,7 @@ export const initialDrivers: Driver[] = [
     cidade: 'São Paulo',
     estado: 'SP',
     cep: '01304-000',
+    veiculo: '-',
     status: 'Fora de serviço',
     imageSrc: 'https://picsum.photos/seed/driver-carlos/300/300'
   },
@@ -191,6 +272,7 @@ export const initialDrivers: Driver[] = [
     cidade: 'São Paulo',
     estado: 'SP',
     cep: '01426-001',
+    veiculo: 'XYZ5678',
     status: 'Disponível',
     imageSrc: 'https://picsum.photos/seed/driver-ana/300/300'
   }

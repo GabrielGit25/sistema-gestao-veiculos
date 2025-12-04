@@ -21,14 +21,9 @@ export function DriverDetails({ driver, onBack, onUpdate }: DriverDetailsProps) 
   }, [driver]);
 
   const handleSave = () => {
-    if (!validateRequiredFields()) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
-      return;
-    }
     onUpdate(editedDriver);
     setIsEditing(false);
     setLastUpdated(new Date());
-    alert('Informações salvas com sucesso!');
   };
 
   const handleCancel = () => {
@@ -49,50 +44,8 @@ export function DriverDetails({ driver, onBack, onUpdate }: DriverDetailsProps) 
 
   const formatDateForDisplay = (dateStr: string) => {
     if (!dateStr) return '';
-    // Converte de YYYY-MM-DD para DD/MM/YYYY
-    const [year, month, day] = dateStr.split('-');
-    return `${day}/${month}/${year}`;
-  };
-
-  // Funções de máscara
-  const applyCpfMask = (value: string) => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 11) {
-      return numbers
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    }
-    return numbers.slice(0, 11)
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  };
-
-  const applyPhoneMask = (value: string) => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 11) {
-      return numbers
-        .replace(/(\d{2})(\d)/, '($1) $2')
-        .replace(/(\d{5})(\d)/, '$1-$2')
-        .replace(/(\d{4})(\d+)$/, '$1');
-    }
-    return numbers.slice(0, 11)
-      .replace(/(\d{2})(\d)/, '($1) $2')
-      .replace(/(\d{5})(\d)/, '$1-$2')
-      .replace(/(\d{4})(\d+)$/, '$1');
-  };
-
-  // Função de validação de campos obrigatórios
-  const validateRequiredFields = () => {
-    const requiredFields: (keyof Driver)[] = [
-      'nome', 'cpf', 'dataNascimento', 'telefone', 'cnh', 'categoriaCNH', 'validadeCNH'
-    ];
-    
-    return requiredFields.every(field => {
-      const value = editedDriver[field];
-      return value !== undefined && value !== null && value.toString().trim() !== '';
-    });
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('pt-BR');
   };
 
   return (
@@ -187,13 +140,11 @@ export function DriverDetails({ driver, onBack, onUpdate }: DriverDetailsProps) 
                 <input
                   type="text"
                   className="detail-input"
-                  value={applyCpfMask(editedDriver.cpf)}
-                  onChange={(e) => setEditedDriver({ ...editedDriver, cpf: e.target.value.replace(/\D/g, '') })}
-                  maxLength={14}
-                  placeholder="000.000.000-00"
+                  value={editedDriver.cpf}
+                  onChange={(e) => setEditedDriver({ ...editedDriver, cpf: e.target.value })}
                 />
               ) : (
-                <div className="detail-field">{applyCpfMask(editedDriver.cpf)}</div>
+                <div className="detail-field">{editedDriver.cpf}</div>
               )}
             </div>
             <div>
@@ -215,13 +166,11 @@ export function DriverDetails({ driver, onBack, onUpdate }: DriverDetailsProps) 
                 <input
                   type="text"
                   className="detail-input"
-                  value={applyPhoneMask(editedDriver.telefone)}
-                  onChange={(e) => setEditedDriver({ ...editedDriver, telefone: e.target.value.replace(/\D/g, '') })}
-                  maxLength={15}
-                  placeholder="(00) 00000-0000"
+                  value={editedDriver.telefone}
+                  onChange={(e) => setEditedDriver({ ...editedDriver, telefone: e.target.value })}
                 />
               ) : (
-                <div className="detail-field">{applyPhoneMask(editedDriver.telefone)}</div>
+                <div className="detail-field">{editedDriver.telefone}</div>
               )}
             </div>
             <div>

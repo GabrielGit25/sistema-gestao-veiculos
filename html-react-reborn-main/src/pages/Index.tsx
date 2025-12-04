@@ -3,9 +3,17 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Dashboard } from "@/pages/Dashboard";
 import { Vehicles } from "@/pages/Vehicles";
 import { Drivers } from "@/pages/Drivers";
+import { Itinerary } from "@/pages/Itinerary";
 import { Vehicle, Driver, initialVehicles, initialDrivers } from "@/data/mockData";
+import { useAuth } from "@/contexts/AuthContext";
+import Login from "./Login";
 
 const Index = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [vehicles, setVehicles] = useState<Vehicle[]>(initialVehicles);
   const [drivers, setDrivers] = useState<Driver[]>(initialDrivers);
@@ -33,6 +41,7 @@ const Index = () => {
       modelo: '',
       marca: 'RENAULT',
       estado: 'São Paulo',
+      motorista: '-',
       status: 'Em serviço',
       quilometragem: '0',
       combustivel: 'Diesel',
@@ -67,6 +76,7 @@ const Index = () => {
       cidade: '',
       estado: 'SP',
       cep: '',
+      veiculo: '-',
       status: 'Disponível',
       imageSrc: null
     };
@@ -106,6 +116,12 @@ const Index = () => {
             onAddDriver={handleAddDriver}
             selectedDriverId={selectedDriverId}
             onSelectDriver={setSelectedDriverId}
+          />
+        );
+      case 'itinerary':
+        return (
+          <Itinerary 
+            vehicles={vehicles}
           />
         );
       default:

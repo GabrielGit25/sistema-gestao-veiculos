@@ -54,6 +54,10 @@ export function DriverCard({ driver, onClick }: DriverCardProps) {
             <span className="text-xs text-muted-foreground">Telefone</span>
             <span className="text-sm font-medium">{driver.telefone}</span>
           </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-muted-foreground">Veículo</span>
+            <span className="text-sm font-medium">{driver.veiculo}</span>
+          </div>
         </div>
         <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
           <span className="text-xs text-muted-foreground">CNH:</span>

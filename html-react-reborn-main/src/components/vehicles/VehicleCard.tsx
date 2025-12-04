@@ -46,6 +46,10 @@ export function VehicleCard({ vehicle, onClick }: VehicleCardProps) {
         <p className="text-sm text-muted-foreground mb-2">{vehicle.marca} {vehicle.modelo}</p>
         <div className="flex justify-between mb-2">
           <div className="flex flex-col">
+            <span className="text-xs text-muted-foreground">Motorista</span>
+            <span className="text-sm font-medium">{vehicle.motorista}</span>
+          </div>
+          <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">Quilometragem</span>
             <span className="text-sm font-medium">{vehicle.quilometragem} km</span>
           </div>
