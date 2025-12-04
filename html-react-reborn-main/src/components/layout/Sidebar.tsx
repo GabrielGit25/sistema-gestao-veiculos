@@ -33,7 +33,7 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
           <div className="w-10 h-10 border-2 border-sidebar-foreground rounded-full flex items-center justify-center">
             <LayoutDashboard className="w-5 h-5" />
           </div>
-          <span className="text-xl font-bold">FleetMax</span>
+          <span className="text-xl font-bold">GestãoVeículos</span>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
             FM
           </div>
           <div>
-            <p className="text-sm font-medium">FleetMax Demo</p>
+            <p className="text-sm font-medium">GestãoVeículos</p>
             <span className="text-xs opacity-70">Administrador</span>
           </div>
         </div>
