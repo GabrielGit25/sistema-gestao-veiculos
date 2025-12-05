@@ -4,7 +4,9 @@ import { Dashboard } from "@/pages/Dashboard";
 import { Vehicles } from "@/pages/Vehicles";
 import { Drivers } from "@/pages/Drivers";
 import { Itinerary } from "@/pages/Itinerary";
+import { Maintenance } from "@/pages/Maintenance";
 import { Vehicle, Driver, initialVehicles, initialDrivers } from "@/data/mockData";
+import { MaintenanceService, mockMaintenanceServices } from "./Maintenance";
 import { useAuth } from "@/contexts/AuthContext";
 import Login from "./Login";
 
@@ -17,6 +19,7 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [vehicles, setVehicles] = useState<Vehicle[]>(initialVehicles);
   const [drivers, setDrivers] = useState<Driver[]>(initialDrivers);
+  const [maintenanceServices, setMaintenanceServices] = useState<MaintenanceService[]>(mockMaintenanceServices);
   const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
   const [selectedDriverId, setSelectedDriverId] = useState<number | null>(null);
 
@@ -32,6 +35,10 @@ const Index = () => {
 
   const handleUpdateDriver = (updatedDriver: Driver) => {
     setDrivers(drivers.map(d => d.id === updatedDriver.id ? updatedDriver : d));
+  };
+
+  const handleUpdateMaintenanceServices = (services: MaintenanceService[]) => {
+    setMaintenanceServices(services);
   };
 
   const handleAddVehicle = () => {
@@ -95,6 +102,7 @@ const Index = () => {
         return (
           <Dashboard 
             vehicles={vehicles}
+            maintenanceServices={maintenanceServices}
             onViewVehicle={handleViewVehicle}
           />
         );
@@ -122,6 +130,14 @@ const Index = () => {
         return (
           <Itinerary 
             vehicles={vehicles}
+          />
+        );
+      case 'maintenance':
+        return (
+          <Maintenance 
+            vehicles={vehicles}
+            maintenanceServices={maintenanceServices}
+            onUpdateMaintenanceServices={handleUpdateMaintenanceServices}
           />
         );
       default:

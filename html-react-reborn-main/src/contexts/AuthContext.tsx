@@ -1,62 +1,62 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-export interface User {
+interface User {
   id: number;
   username: string;
-  password: string;
-  type: 'admin' | 'driver';
-  driverId?: number; // ID do motorista associado (se for motorista)
-  vehicleId?: number; // ID do veículo associado (se for motorista)
+  role: 'admin' | 'driver';
+  vehicleId?: number;
 }
 
-export interface AuthContextType {
+interface AuthContextType {
+  isAuthenticated: boolean;
   user: User | null;
+  isDriver: boolean;
+  isAdmin: boolean;
   login: (username: string, password: string) => boolean;
   logout: () => void;
-  isAuthenticated: boolean;
-  isAdmin: boolean;
-  isDriver: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Usuários mockados (em produção, isso viria de uma API)
-export const mockUsers: User[] = [
-  {
-    id: 1,
-    username: 'admin',
-    password: 'admin123',
-    type: 'admin'
-  },
-  {
-    id: 2,
-    username: 'joao',
-    password: 'motorista123',
-    type: 'driver',
-    driverId: 1, // João Silva
-    vehicleId: 1 // Veículo SGF1525
-  },
-  {
-    id: 3,
-    username: 'maria',
-    password: 'motorista123',
-    type: 'driver',
-    driverId: 2, // Maria Santos
-    vehicleId: 2 // Veículo ABC1234
-  }
-];
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
   const login = (username: string, password: string): boolean => {
-    const foundUser = mockUsers.find(
-      u => u.username === username && u.password === password
-    );
-
-    if (foundUser) {
-      setUser(foundUser);
-      localStorage.setItem('user', JSON.stringify(foundUser));
+    // Simulação simples de autenticação
+    // Em uma aplicação real, isso seria uma chamada API
+    if (username === 'admin' && password === 'admin123') {
+      const userData: User = {
+        id: 1,
+        username: 'admin',
+        role: 'admin'
+      };
+      setUser(userData);
+      setIsAuthenticated(true);
+      return true;
+    } else if (username === 'joao' && password === 'motorista123') {
+      const userData: User = {
+        id: 2,
+        username: 'joao',
+        role: 'driver',
+        vehicleId: 1 // ID do veículo associado ao motorista João
+      };
+      setUser(userData);
+      setIsAuthenticated(true);
+      return true;
+    } else if (username === 'maria' && password === 'motorista123') {
+      const userData: User = {
+        id: 3,
+        username: 'maria',
+        role: 'driver',
+        vehicleId: 2 // ID do veículo associado ao motorista Maria
+      };
+      setUser(userData);
+      setIsAuthenticated(true);
       return true;
     }
     return false;
@@ -64,24 +64,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    setIsAuthenticated(false);
   };
 
-  // Verificar se há usuário salvo no localStorage ao inicializar
-  useState(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  });
-
   const value: AuthContextType = {
+    isAuthenticated,
     user,
+    isDriver: user?.role === 'driver',
+    isAdmin: user?.role === 'admin',
     login,
-    logout,
-    isAuthenticated: !!user,
-    isAdmin: user?.type === 'admin',
-    isDriver: user?.type === 'driver'
+    logout
   };
 
   return (
@@ -89,12 +81,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}

@@ -1,16 +1,18 @@
-import { Car, Users, FileText, Bell } from "lucide-react";
+import { Car, Users, FileText, Bell, Wrench } from "lucide-react";
 import { Vehicle } from "@/data/mockData";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { useAuth } from "@/contexts/AuthContext";
+import { mockMaintenanceServices } from "./Maintenance";
 
 interface DashboardProps {
   vehicles: Vehicle[];
+  maintenanceServices: MaintenanceService[];
   onViewVehicle: (vehicleId: number) => void;
 }
 
 
 
-export function Dashboard({ vehicles, onViewVehicle }: DashboardProps) {
+export function Dashboard({ vehicles, maintenanceServices, onViewVehicle }: DashboardProps) {
   const { user, isDriver } = useAuth();
   
   // Filtrar veículos baseado no tipo de usuário
@@ -20,6 +22,26 @@ export function Dashboard({ vehicles, onViewVehicle }: DashboardProps) {
   }
   
   const vehiclesInService = filteredVehicles.filter(v => v.status === 'Em serviço');
+
+  // Obter informações do último serviço
+  const getLastServiceInfo = () => {
+    if (maintenanceServices.length === 0) return null;
+    
+    const lastService = maintenanceServices.sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    )[0];
+    
+    const vehicle = vehicles.find(v => v.id === lastService.vehicleId);
+    
+    return {
+      date: lastService.date,
+      vehiclePlate: lastService.vehiclePlate,
+      vehicleModel: vehicle?.model || 'Desconhecido',
+      serviceType: lastService.serviceType
+    };
+  };
+
+  const lastServiceInfo = getLastServiceInfo();
 
   // Dashboard cards configurada dentro do componente para acessar as variáveis
   const dashboardCards = [
@@ -42,10 +64,10 @@ export function Dashboard({ vehicles, onViewVehicle }: DashboardProps) {
       icon: FileText,
     },
     { 
-      title: 'Alertas', 
-      value: '5', 
-      subtitle: '2 urgentes',
-      icon: Bell,
+      title: 'Último Serviço', 
+      value: lastServiceInfo ? new Date(lastServiceInfo.date).toLocaleDateString('pt-BR') : 'Nenhum', 
+      subtitle: lastServiceInfo ? `${lastServiceInfo.vehiclePlate} (${lastServiceInfo.vehicleModel}) - ${lastServiceInfo.serviceType}` : 'Nenhum serviço registrado',
+      icon: Wrench,
     },
   ];
 

@@ -20,9 +20,8 @@ const navItems = [
   { id: 'dashboard', label: 'Painel de controlo', icon: LayoutDashboard },
   { id: 'vehicles', label: 'Veículos', icon: Car },
   { id: 'drivers', label: 'Motoristas', icon: Users },
-  { id: 'mileage', label: 'Quilometragem', icon: Gauge },
-  { id: 'itinerary', label: 'Itinerário', icon: FileText },
   { id: 'maintenance', label: 'Manutenção', icon: Wrench },
+  { id: 'itinerary', label: 'Itinerário', icon: FileText },
   { id: 'alerts', label: 'Alertas', icon: Bell, badge: '5 Ver' },
 ];
 
@@ -36,7 +35,7 @@ export function Sidebar({ currentPage, onNavigate }: SidebarProps) {
           <div className="w-10 h-10 border-2 border-sidebar-foreground rounded-full flex items-center justify-center">
             <LayoutDashboard className="w-5 h-5" />
           </div>
-          <span className="text-xl font-bold">FleetMax</span>
+          <span className="text-xl font-bold">GestãoVeículos</span>
         </div>
       </div>
 
